@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %} <!--загружаем теги без которых изображение выводиться не будет-->
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+
+{% comment %}
+Delete the line below if you're just getting started and want to remove the welcome screen!
+{% endcomment %}
+<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<h1>{{ page.title }}<h1/>
+<h2>{{ page.subtitles }}<h2/>
+
+{% image page.bg_image fill-200x200-c100 as bgimage%} <!--Подключаем вывод изображения из bg_image,
+модификатор original задает оригинальный размер изображения-->
+<a href="{{ bgimage.url }}">Ссылка на изображение с alt {{ bgimage.alt }}</a>
+
+<div>
+    <!--{{ page.rtfbody|richtext }} закомментируем RichTextField
+     так как использовать его мы больше не будем-->
+
+    {% include_block page.body %} <!-- С помощью тега include_block подключаем редактор
+     из переменной body из models.py-->
+
+
+</div>
+
+
+{% endblock content %}
