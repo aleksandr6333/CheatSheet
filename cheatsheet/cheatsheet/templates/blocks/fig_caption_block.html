@@ -1,0 +1,8 @@
+{% load wagtailcore_tags wagtailimages_tags %} <!--загружаем теги для работы с изображениями-->
+
+<figure> <!--Элемент иллюстрации с необязательной подписью-->
+    {% image self.figure fill-300x300-c85 %} <!--Выводим изображение ограничивая
+    его областью 300Х300 пикселей-->
+    <figcaption>{{ self.caption|richtext }}</figcaption> <!--Выводим описание
+    изображения с помощью фильтра richtext-->
+</figure>
