@@ -196,3 +196,8 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
+
+WAGTAIL_ENABLE_UPDATE_CHECK = False # Запрещаем вывод напоминания о новой версии Wagtail
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField" # Указание поля в моделях являющегося primary key
+

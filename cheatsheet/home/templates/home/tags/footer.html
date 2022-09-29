@@ -1,0 +1,8 @@
+{% load wagtailcore_tags %} <!--Для работы фильтра
+richtext загрузим теги wagtailcore_tags-->
+
+
+<footer>
+  <hr />
+  {{ footer.bodytext|richtext }} <!--Не забываем указывать фильтр richtext-->
+</footer>

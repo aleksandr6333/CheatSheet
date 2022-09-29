@@ -10,6 +10,22 @@ from wagtail.embeds.blocks import EmbedBlock #Импортируем блок д
 
 from .blocks import FigCaptionBlock # Импортируем созданный блок FigCaptionBlock
 
+from wagtail.snippets.models import register_snippet # импортируем декоратор для фрагмента Footer
+
+
+@register_snippet # Создаем декоратор
+class Footer(models.Model): # Создаем модель фрагмента
+
+    bodytext = RichTextField()  # Добавляем поля во фрагмент
+
+    panels = FieldPanel('bodytext'), # Добавили вывод футера в админ панель
+
+    class Meta: # Класс мета в котором переопределим названия на русском
+        verbose_name = "Футер" # Заменим Footer название на русском в единственном числе
+        verbose_name_plural = "Футеры" # Заменим Footer название на русском в множественном числе
+
+    def __str__(self): # Переопределили метод согласно требованию документации
+        return "Футер"
 
 class NewsPage(Page): # Создадим новый класс , так же наследуемый от базового класса Page
     template = 'home/newspage.html' # Явно укажем название шаблона с несовпадающим с именем класса именем
