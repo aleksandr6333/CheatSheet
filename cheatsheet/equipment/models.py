@@ -1,10 +1,27 @@
 from django.db import models
-from wagtail.core.models import  Page
+from wagtail.core.models import  Page, Orderable # Импортируем Orderable
 from wagtail.core.fields import RichTextField
 
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel # доавили импорт MultiFieldPanel
 
 from modelcluster.fields import ParentalKey # Импортируем ParentalKey
+
+
+class EquipmentImage(Orderable): # Добавим модель фрагмента - сниппета для вывода изображения
+    """Изображение оборудования"""
+
+    caption = models.CharField(max_length=200, verbose_name = "Текст слайда") # Добавим поле Текст слайда
+
+    equipment = ParentalKey(  # Связываем EquipmentImage (ParentalKey
+        # как и Page наследуется от  ClusterableModel)
+        # с EquipmentPage через ParentalKey
+        'equipment.EquipmentPage',  # Указываем что в приложении equipment
+        # есть страница EquipmentPage с которой нужно установить связь
+        on_delete=models.CASCADE,  # Если EquipmentPage будет удалена,
+        # то EquipmentImage тоже удаляется
+        related_name='slides'  # имя по которому можно обращаться к
+        # EquipmentImage из EquipmentPage
+    )
 
 class EquipmentOperator(models.Model): # Добавим модель фрагмента - сниппета
     """Оператор оборудования"""
@@ -18,7 +35,7 @@ class EquipmentOperator(models.Model): # Добавим модель фрагм�
         'equipment.EquipmentPage', # Указываем что в приложении equipment
         # есть страница EquipmentPage с которой нужно установить связь
         on_delete=models.CASCADE, # Если EquipmentPage будет удалена,
-        # то EquipmentPage тоже удаляется
+        # то EquipmentOperator тоже удаляется
         related_name='operators' # имя по которому можно обращаться к
         # EquipmentOperator из EquipmentPage
     )
@@ -36,8 +53,14 @@ class EquipmentPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('description'), # добавляем возможность отображения поля в админпанели
+
+        MultiFieldPanel([  # добавляет вывод красной полосы с заголовком heading
+            InlinePanel('slides', label="слайд")],  # через InlinePanel добавим
+            # возможность вывода фрагмента в админпанели и именование кнопки
+            heading="Слайды", ),  # Заголовок
+
         MultiFieldPanel([ # добавляет вывод красной полосы с заголовком heading
-            InlinePanel('operators', label="оператора")], # через InlinePanel добавим
+            InlinePanel('operators', label="оператор")], # через InlinePanel добавим
             # возможность вывода фрагмента в админпанели и именование кнопки
             heading="Операторы",) # Заголовок
     ]
